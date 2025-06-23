@@ -1,36 +1,48 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Colors } from "../types/colors"
 import "./PuzzleBox.css"
-import type { Puzzle } from "../types/puzzle";
+import type { Puzzle } from "../types/puzzle"
+import { pressTile } from "../logic/puzzleActions"
 
 function PuzzleBox() {
     const [puzzle, setPuzzle] = useState<Puzzle>({
         corners: {
-            tl: { color: Colors.Black },
-            tr: { color: Colors.Black },
-            bl: { color: Colors.Black },
-            br: { color: Colors.Black },
+            tl: { color: Colors.Pink },
+            tr: { color: Colors.Pink },
+            bl: { color: Colors.Pink },
+            br: { color: Colors.Pink },
         },
         tiles: [
-            [{ color: Colors.Black }, { color: Colors.Gray }, { color: Colors.White }],
-            [{ color: Colors.Green }, { color: Colors.Orange }, { color: Colors.Pink }],
-            [{ color: Colors.Red }, { color: Colors.Violet }, { color: Colors.Yellow }],
-        ]
+            [{ color: Colors.Pink }, { color: Colors.Pink }, { color: Colors.Gray }],
+            [{ color: Colors.Gray }, { color: Colors.Gray }, { color: Colors.Gray }],
+            [{ color: Colors.Orange }, { color: Colors.Orange }, { color: Colors.Orange }],
+        ],
+    })
+
+    const clickAudio = useRef(new Audio("/sounds/click.mp3"))
+
+    function onTileClick(i: number, j: number) {
+        playClickSound()
+        handleTileClick(i, j)
     }
-    )
+
+    function playClickSound() {
+        clickAudio.current.currentTime = 0.2
+        clickAudio.current.play()
+    }
 
     function handleTileClick(i: number, j: number) {
-        const tile = puzzle.tiles[i][j]
-        console.log("color is: " + tile.color)
+        const newPuzzle = pressTile(puzzle, i, j)
+        setPuzzle(newPuzzle)
     }
 
     return (
         <div className="box-wrapper">
             <div className="box">
-                <div className="corner corner-tl" style={{backgroundColor: puzzle.corners.tl.color }} />
-                <div className="corner corner-tr" style={{backgroundColor: puzzle.corners.tr.color }} />
-                <div className="corner corner-bl" style={{backgroundColor: puzzle.corners.bl.color }} />
-                <div className="corner corner-br" style={{backgroundColor: puzzle.corners.br.color }} />
+                <div className="corner corner-tl" style={{ backgroundColor: puzzle.corners.tl.color }} />
+                <div className="corner corner-tr" style={{ backgroundColor: puzzle.corners.tr.color }} />
+                <div className="corner corner-bl" style={{ backgroundColor: puzzle.corners.bl.color }} />
+                <div className="corner corner-br" style={{ backgroundColor: puzzle.corners.br.color }} />
                 <div className="inner-box">
                     <div className="grid">
                         {
@@ -39,7 +51,7 @@ function PuzzleBox() {
                                     <div key={`${i}-${j}`}
                                         className="tile"
                                         style={{ backgroundColor: tile.color }}
-                                        onClick={() => handleTileClick(i, j)}
+                                        onClick={() => onTileClick(i, j)}
                                     />
                                 ))
                             )
