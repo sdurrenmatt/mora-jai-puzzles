@@ -1,4 +1,4 @@
-import PuzzleBox from "./PuzzleBox"
+import PuzzleBox from "./components/PuzzleBox"
 
 function App() {
   return (

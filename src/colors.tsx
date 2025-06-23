@@ -1,1 +1,0 @@
-export const ORANGE = "#C47D2F";

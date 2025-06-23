@@ -1,13 +1,14 @@
 import { useState } from "react"
-import { ORANGE } from './colors';
+import type { Tile } from "../types/tile"
+import { Colors } from "../types/colors"
 import "./PuzzleBox.css"
 
 function PuzzleBox() {
-    const [tiles, setTiles] = useState([
-        [{ id: 1, color: ORANGE }, { id: 2, color: ORANGE }, { id: 3, color: ORANGE }],
-        [{ id: 4, color: ORANGE }, { id: 5, color: ORANGE }, { id: 6, color: ORANGE }],
-        [{ id: 7, color: ORANGE }, { id: 8, color: ORANGE }, { id: 9, color: ORANGE }],
-    ]);
+    const [tiles, setTiles] = useState<Tile[][]>([
+        [{ id: 1, color: Colors.Orange }, { id: 2, color: Colors.Orange }, { id: 3, color: Colors.Orange }],
+        [{ id: 4, color: Colors.Orange }, { id: 5, color: Colors.Orange }, { id: 6, color: Colors.Orange }],
+        [{ id: 7, color: Colors.Orange }, { id: 8, color: Colors.Orange }, { id: 9, color: Colors.Orange }],
+    ])
 
     function handleTileClick(i: number, j: number) {
         const tile = tiles[i][j]
