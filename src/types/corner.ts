@@ -1,5 +1,5 @@
 import type { Color } from "./colors"
 
-export type Tile = {
+export type Corner = {
     color: Color,
 }
