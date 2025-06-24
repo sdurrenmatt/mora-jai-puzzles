@@ -17,13 +17,14 @@ function PuzzleBox() {
             [{ color: Colors.Gray }, { color: Colors.Gray }, { color: Colors.Gray }],
             [{ color: Colors.Orange }, { color: Colors.Orange }, { color: Colors.Orange }],
         ],
+        solved: false
     })
 
     const clickAudio = useRef(new Audio("/sounds/click.mp3"))
 
     function onTileClick(i: number, j: number) {
         playClickSound()
-        handleTileClick(i, j)
+        updatePuzzle(i, j)
     }
 
     function playClickSound() {
@@ -31,7 +32,7 @@ function PuzzleBox() {
         clickAudio.current.play()
     }
 
-    function handleTileClick(i: number, j: number) {
+    function updatePuzzle(i: number, j: number) {
         const newPuzzle = pressTile(puzzle, i, j)
         setPuzzle(newPuzzle)
     }

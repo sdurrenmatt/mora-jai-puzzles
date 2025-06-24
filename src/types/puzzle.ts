@@ -9,4 +9,5 @@ export type Puzzle = {
         br: Corner
     }
     tiles: Tile[][]
+    solved: boolean
 }

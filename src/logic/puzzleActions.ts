@@ -1,6 +1,6 @@
 import { Colors, type Color } from "../types/colors"
 import type { Puzzle } from "../types/puzzle"
-import { getAdjacentTiles, countColors, findMajorColor, getSurroundingPositions, getAdjacentPositions } from "./puzzleUtils"
+import { getAdjacentTiles, countColors, findMajorColor, getSurroundingPositions, getAdjacentPositions, isSolved } from "./puzzleUtils"
 
 function swapTiles(p: Puzzle, i1: number, j1: number, i2: number, j2: number) {
     if (i1 === i2 && j1 === j2) return p
@@ -14,13 +14,13 @@ function swapTiles(p: Puzzle, i1: number, j1: number, i2: number, j2: number) {
     return { ...p, tiles: newTiles }
 }
 
-function rotateTilesClockwise(p: Puzzle, positions: [number, number][]): Puzzle {
+function shiftTiles(p: Puzzle, positions: [number, number][]): Puzzle {
     const newTiles = p.tiles.map(row => [...row])
-    const tilesToRotate = positions.map(([x, y]) => p.tiles[x][y])
-    const rotatedTiles = [tilesToRotate[tilesToRotate.length - 1], ...tilesToRotate.slice(0, -1)]
+    const tilesToShift = positions.map(([x, y]) => p.tiles[x][y])
+    const shiftedTiles = [tilesToShift[tilesToShift.length - 1], ...tilesToShift.slice(0, -1)]
 
     positions.forEach(([x, y], i) => {
-        newTiles[x][y] = rotatedTiles[i]
+        newTiles[x][y] = shiftedTiles[i]
     })
 
     return { ...p, tiles: newTiles }
@@ -62,7 +62,7 @@ function pressOrangeTile(p: Puzzle, i: number, j: number) {
 
 function pressPinkTile(p: Puzzle, i: number, j: number) {
     const positions = getSurroundingPositions(i, j)
-    return rotateTilesClockwise(p, positions)
+    return shiftTiles(p, positions)
 }
 
 function pressRedTile(p: Puzzle) {
@@ -120,5 +120,9 @@ const colorTilePressers: Record<string, ColorTilePresser> = {
 export function pressTile(p: Puzzle, i: number, j: number) {
     const color = p.tiles[i][j].color
     const tilePresser = colorTilePressers[color]
-    return tilePresser ? tilePresser(p, i, j) : p
+
+    const newPuzzle = tilePresser ? tilePresser(p, i, j) : p
+    const solved = isSolved(newPuzzle)
+
+    return solved === p.solved ? newPuzzle : { ...newPuzzle, solved }
 }

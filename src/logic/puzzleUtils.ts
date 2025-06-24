@@ -46,3 +46,10 @@ export function findMajorColor(counts: Record<Color, number>): Color | null {
     const secondCount = sorted[1]?.[1]
     return secondCount === maxCount ? null : majorColor as Color
 }
+
+export function isSolved(p: Puzzle): boolean {
+    return p.tiles[0][0].color === p.corners.tl.color
+        && p.tiles[0][2].color === p.corners.tr.color
+        && p.tiles[2][0].color === p.corners.bl.color
+        && p.tiles[2][2].color === p.corners.br.color
+}
