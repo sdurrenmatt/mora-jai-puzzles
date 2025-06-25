@@ -53,7 +53,7 @@ function PuzzleBox() {
                                         key={`${i}-${j}`}
                                         className="puzzle-box__tile wood-texture wood-filter--light"
                                         style={{ backgroundColor: tile.color }}
-                                        onClick={puzzle.solved ? undefined : () => onTileClick(i, j)}
+                                        onClick={() => onTileClick(i, j)}
                                     />
                                 ))
                             )
