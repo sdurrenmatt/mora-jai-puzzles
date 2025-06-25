@@ -13,9 +13,9 @@ function PuzzleBox() {
             br: { color: Colors.Pink },
         },
         tiles: [
-            [{ color: Colors.Pink }, { color: Colors.Pink }, { color: Colors.Gray }],
+            [{ color: Colors.Pink }, { color: Colors.Pink }, { color: Colors.Pink }],
             [{ color: Colors.Gray }, { color: Colors.Gray }, { color: Colors.Gray }],
-            [{ color: Colors.Orange }, { color: Colors.Orange }, { color: Colors.Orange }],
+            [{ color: Colors.Pink }, { color: Colors.Orange }, { color: Colors.Pink }],
         ],
         solved: false
     })
@@ -38,21 +38,22 @@ function PuzzleBox() {
     }
 
     return (
-        <div className="box-wrapper">
-            <div className="box">
-                <div className="corner corner-tl" style={{ backgroundColor: puzzle.corners.tl.color }} />
-                <div className="corner corner-tr" style={{ backgroundColor: puzzle.corners.tr.color }} />
-                <div className="corner corner-bl" style={{ backgroundColor: puzzle.corners.bl.color }} />
-                <div className="corner corner-br" style={{ backgroundColor: puzzle.corners.br.color }} />
-                <div className="inner-box">
-                    <div className="grid">
+        <div className="puzzle-box-wrapper">
+            <div className={`puzzle-box ${puzzle.solved ? "puzzle-box--solved" : ""}`}>
+                <div className="puzzle-box__corner puzzle-box__corner--tl" style={{ backgroundColor: puzzle.corners.tl.color }} />
+                <div className="puzzle-box__corner puzzle-box__corner--tr" style={{ backgroundColor: puzzle.corners.tr.color }} />
+                <div className="puzzle-box__corner puzzle-box__corner--bl" style={{ backgroundColor: puzzle.corners.bl.color }} />
+                <div className="puzzle-box__corner puzzle-box__corner--br" style={{ backgroundColor: puzzle.corners.br.color }} />
+                <div className="puzzle-box__grid-wrapper">
+                    <div className="puzzle-box__grid">
                         {
-                            puzzle.tiles.map((row, i) =>
+                            puzzle.tiles.flatMap((row, i) =>
                                 row.map((tile, j) => (
-                                    <div key={`${i}-${j}`}
-                                        className="tile"
+                                    <div
+                                        key={`${i}-${j}`}
+                                        className="puzzle-box__tile"
                                         style={{ backgroundColor: tile.color }}
-                                        onClick={() => onTileClick(i, j)}
+                                        onClick={puzzle.solved ? undefined : () => onTileClick(i, j)}
                                     />
                                 ))
                             )

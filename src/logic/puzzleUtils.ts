@@ -33,17 +33,16 @@ export function getSurroundingPositions(i: number, j: number): [number, number][
     ].filter(([x, y]) => x >= 0 && x < 3 && y >= 0 && y < 3) as [number, number][]
 }
 
-export function countColors(tiles: Tile[]): Record<Color, number> {
-    return tiles.reduce((counts, tile) => {
+export function findMajorColor(tiles: Tile[]): Color | null {
+    const counts = tiles.reduce((counts, tile) => {
         counts[tile.color] = (counts[tile.color] ?? 0) + 1
         return counts
     }, {} as Record<Color, number>)
-}
 
-export function findMajorColor(counts: Record<Color, number>): Color | null {
     const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1])
     const [majorColor, maxCount] = sorted[0]
     const secondCount = sorted[1]?.[1]
+
     return secondCount === maxCount ? null : majorColor as Color
 }
 
