@@ -39,19 +39,19 @@ function PuzzleBox() {
 
     return (
         <div className="puzzle-box-wrapper">
-            <div className={`puzzle-box ${puzzle.solved ? "puzzle-box--solved" : ""}`}>
-                <div className="puzzle-box__corner puzzle-box__corner--tl" style={{ backgroundColor: puzzle.corners.tl.color }} />
-                <div className="puzzle-box__corner puzzle-box__corner--tr" style={{ backgroundColor: puzzle.corners.tr.color }} />
-                <div className="puzzle-box__corner puzzle-box__corner--bl" style={{ backgroundColor: puzzle.corners.bl.color }} />
-                <div className="puzzle-box__corner puzzle-box__corner--br" style={{ backgroundColor: puzzle.corners.br.color }} />
-                <div className="puzzle-box__grid-wrapper">
+            <div className={`puzzle-box ${puzzle.solved ? "puzzle-box--solved" : ""} wood-texture wood-filter--dark`}>
+                <div className="puzzle-box__corner puzzle-box__corner--tl wood-texture wood-filter--light" style={{ backgroundColor: puzzle.corners.tl.color }} />
+                <div className="puzzle-box__corner puzzle-box__corner--tr wood-texture wood-filter--light" style={{ backgroundColor: puzzle.corners.tr.color }} />
+                <div className="puzzle-box__corner puzzle-box__corner--bl wood-texture wood-filter--light" style={{ backgroundColor: puzzle.corners.bl.color }} />
+                <div className="puzzle-box__corner puzzle-box__corner--br wood-texture wood-filter--light" style={{ backgroundColor: puzzle.corners.br.color }} />
+                <div className="puzzle-box__grid-wrapper wood-texture wood-filter--dim">
                     <div className="puzzle-box__grid">
                         {
                             puzzle.tiles.flatMap((row, i) =>
                                 row.map((tile, j) => (
                                     <div
                                         key={`${i}-${j}`}
-                                        className="puzzle-box__tile"
+                                        className="puzzle-box__tile wood-texture wood-filter--light"
                                         style={{ backgroundColor: tile.color }}
                                         onClick={puzzle.solved ? undefined : () => onTileClick(i, j)}
                                     />
