@@ -1,0 +1,11 @@
+.puzzle-note__text {
+    position: relative;
+    top: 2px;
+    left: 2px;
+    font-family: 'Satisfy', cursive;
+    font-size: 44px;
+    color: #302b28;
+    letter-spacing: -0.5px;
+    transform: rotate(-1deg);
+    text-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
+}

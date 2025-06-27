@@ -1,19 +1,27 @@
+.old-paper-texture::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("../assets/images/textures/old-paper.webp") no-repeat center center;
+    background-size: cover;
+}
+
 .wood-texture::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: url("/images/wood-texture.webp") no-repeat center center;
+    background: url("../assets/images/textures/wood.webp") no-repeat center center;
     background-size: cover;
 }
 
 .wood-filter--dark::before {
-    filter: brightness(0.4) saturate(0.4);
+    filter: brightness(0.4);
 }
 
 .wood-filter--dim::before {
-    filter: brightness(0.6) saturate(0.1);
+    filter: brightness(0.6);
 }
 
 .wood-filter--light::before {
-    filter: brightness(1.3) opacity(0.3) saturate(0.1);
+    filter: brightness(1.3) opacity(0.3);
 }

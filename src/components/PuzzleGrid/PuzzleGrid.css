@@ -1,0 +1,6 @@
+.puzzle-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 125px);
+    grid-template-rows: repeat(3, 125px);
+    gap: 30px;
+}

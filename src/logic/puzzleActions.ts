@@ -1,6 +1,6 @@
 import { Colors, type Color } from "../types/colors"
 import type { Puzzle } from "../types/puzzle"
-import { getAdjacentTiles, findMajorColor, getSurroundingPositions, getAdjacentPositions, isSolved } from "./puzzleUtils"
+import { findMajorColor, getAdjacentPositions, getAdjacentTiles, getSurroundingPositions, isSolved } from "./puzzleUtils"
 
 function swapTiles(p: Puzzle, i1: number, j1: number, i2: number, j2: number) {
     if (i1 === i2 && j1 === j2) return p
@@ -80,7 +80,7 @@ function pressVioletTile(p: Puzzle, i: number, j: number) {
 }
 
 function pressWhiteTile(p: Puzzle, i: number, j: number) {
-    const newTiles = p.tiles.map(row => [...row])
+    const newTiles = p.tiles.map((row) => [...row])
 
     newTiles[i][j] = { ...newTiles[i][j], color: Colors.Gray }
 
