@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import { useCallback, useEffect, useState } from "react"
 import clickTileSound from "../../assets/sounds/click-tile.mp3"
 import openBoxSound from "../../assets/sounds/open-box.mp3"
@@ -19,9 +20,9 @@ function PuzzleBox() {
             br: { color: Colors.Pink },
         },
         tiles: [
-            [{ color: Colors.Pink }, { color: Colors.Pink }, { color: Colors.Pink }],
             [{ color: Colors.Pink }, { color: Colors.Pink }, { color: Colors.Gray }],
-            [{ color: Colors.Pink }, { color: Colors.Pink }, { color: Colors.Pink }],
+            [{ color: Colors.Gray }, { color: Colors.Gray }, { color: Colors.Gray }],
+            [{ color: Colors.Orange }, { color: Colors.Orange }, { color: Colors.Orange }],
         ],
         solved: false
     })
@@ -33,21 +34,16 @@ function PuzzleBox() {
         if (puzzle.solved) {
             openAudio.play()
         }
-    }, [puzzle.solved])
-
-    const updatePuzzle = useCallback((i: number, j: number) => {
-        const newPuzzle = pressTile(puzzle, i, j)
-        setPuzzle(newPuzzle)
-    }, [puzzle])
+    }, [puzzle.solved, openAudio])
 
     const onTileClick = useCallback((i: number, j: number) => {
         clickAudio.play()
-        updatePuzzle(i, j)
-    }, [clickAudio, updatePuzzle])
+        setPuzzle(p => pressTile(p, i, j))
+    }, [clickAudio])
 
     return (
         <div className="puzzle-box-wrapper">
-            <div className={`puzzle-box${puzzle.solved ? " puzzle-box--solved" : ""} wood-texture wood-filter--dark`}>
+            <div className={clsx("puzzle-box", { "puzzle-box--solved": puzzle.solved }, "wood-texture wood-filter--dark")}>
                 <PuzzleCorners corners={puzzle.corners} />
                 <div className="puzzle-box__base wood-texture wood-filter--light">
                     <div className="puzzle-box__puzzle-note">

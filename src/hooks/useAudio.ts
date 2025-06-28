@@ -1,12 +1,12 @@
-import { useRef } from "react"
+import { useCallback, useMemo, useRef } from "react"
 
 export function useAudio(src: string) {
   const audioRef = useRef(new Audio(src))
 
-  function play() {
+  const play = useCallback(() => {
     audioRef.current.currentTime = 0
     audioRef.current.play()
-  }
+  }, [])
 
-  return { play }
+  return useMemo(() => ({ play }), [play])
 }
