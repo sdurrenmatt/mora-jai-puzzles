@@ -1,9 +1,8 @@
 import clsx from "clsx"
-import { useCallback, useEffect, useState } from "react"
 import clickTileSound from "../../assets/sounds/click-tile.mp3"
 import openBoxSound from "../../assets/sounds/open-box.mp3"
 import { useAudio } from "../../hooks/useAudio"
-import { pressTile } from "../../logic/puzzleActions"
+import { usePuzzleState } from "../../hooks/usePuzzleState"
 import type { Puzzle } from "../../types/puzzle"
 import PuzzleCorners from "../PuzzleCorners/PuzzleCorners"
 import PuzzleGrid from "../PuzzleGrid/PuzzleGrid"
@@ -14,27 +13,16 @@ type PuzzleBoxProps = {
     puzzleData: Puzzle
 }
 
-function PuzzleBox({ puzzleData } : PuzzleBoxProps) {
-    const [puzzle, setPuzzle] = useState(puzzleData)
-
+function PuzzleBox({ puzzleData }: PuzzleBoxProps) {
     const clickAudio = useAudio(clickTileSound)
     const openAudio = useAudio(openBoxSound)
 
-    useEffect(() => {
-        if (puzzle.solved) {
-            openAudio.play()
-        }
-    }, [puzzle.solved, openAudio])
-
-    const onTileClick = useCallback((i: number, j: number) => {
-        clickAudio.play()
-        setPuzzle(p => pressTile(p, i, j))
-    }, [clickAudio])
+    const { puzzle, onCornerClick, onTileClick } = usePuzzleState(puzzleData, clickAudio, openAudio)
 
     return (
         <div className="puzzle-box-wrapper">
-            <div className={clsx("puzzle-box", { "puzzle-box--solved": puzzle.solved }, "wood-texture wood-filter--dark")}>
-                <PuzzleCorners corners={puzzle.corners} />
+            <div className={clsx("puzzle-box", puzzle.solved && "puzzle-box--solved", "wood-texture wood-filter--dark")}>
+                <PuzzleCorners corners={puzzle.corners} onCornerClick={onCornerClick} />
                 <div className="puzzle-box__base wood-texture wood-filter--light">
                     <div className="puzzle-box__puzzle-note">
                         <PuzzleNote />

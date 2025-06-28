@@ -1,4 +1,4 @@
-import type { Corner } from "./corner";
+import type { Corner } from "./corner"
 
 export type Corners = {
     tl: Corner

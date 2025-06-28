@@ -2,6 +2,19 @@
     position: absolute;
     width: 90px;
     height: 90px;
+    cursor: pointer;
+}
+
+.puzzle-corner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: background-color 1s ease;
+}
+
+.puzzle-corner--lit::after {
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .puzzle-corner--tl {

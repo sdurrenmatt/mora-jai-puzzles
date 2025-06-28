@@ -1,6 +1,7 @@
 import { Colors, type Color } from "../types/colors"
+import type { CornerPosition } from "../types/cornerPositions"
 import type { Puzzle } from "../types/puzzle"
-import { findMajorColor, getAdjacentPositions, getAdjacentTiles, getSurroundingPositions, isSolved } from "./puzzleUtils"
+import { findMajorColor, getAdjacentPositions, getAdjacentTiles, getSurroundingPositions, isCornerMatched, isSolved } from "./puzzleUtils"
 
 function swapTiles(p: Puzzle, i1: number, j1: number, i2: number, j2: number) {
     if (i1 === i2 && j1 === j2) return p
@@ -103,7 +104,7 @@ function pressYellowTile(p: Puzzle, i: number, j: number) {
 
 type ColorTilePresser = (p: Puzzle, i: number, j: number) => Puzzle
 
-const colorTilePressers: Record<string, ColorTilePresser> = {
+const colorTilePressers: Record<Color, ColorTilePresser> = {
     [Colors.Black]: (p, i, _j) => pressBlackTile(p, i),
     [Colors.Blue]: (p, i, j) => pressBlueTile(p, i, j),
     [Colors.Gray]: (p, _i, _j) => pressGrayTile(p),
@@ -116,12 +117,25 @@ const colorTilePressers: Record<string, ColorTilePresser> = {
     [Colors.Yellow]: (p, i, j) => pressYellowTile(p, i, j),
 }
 
-export function pressTile(p: Puzzle, i: number, j: number) {
+export function pressTile(p: Puzzle, i: number, j: number): Puzzle {
     const color = p.tiles[i][j].color
     const tilePresser = colorTilePressers[color]
+    return tilePresser(p, i, j)
+}
 
-    const newPuzzle = tilePresser ? tilePresser(p, i, j) : p
-    const solved = isSolved(newPuzzle)
+export function updateCorner(p: Puzzle, position: CornerPosition): Puzzle {
+    return {
+        ...p,
+        corners: {
+            ...p.corners,
+            [position]: {
+                ...p.corners[position],
+                matched: isCornerMatched(p, position),
+            },
+        }
+    }
+}
 
-    return solved === p.solved ? newPuzzle : { ...newPuzzle, solved }
+export function updateSolved(p: Puzzle): Puzzle {
+    return isSolved(p) ? { ...p, solved: true } : p
 }

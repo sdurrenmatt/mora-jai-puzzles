@@ -1,4 +1,5 @@
 import type { Color } from "../types/colors"
+import type { CornerPosition } from "../types/cornerPositions"
 import type { Puzzle } from "../types/puzzle"
 import type { Tile } from "../types/tile"
 
@@ -46,9 +47,16 @@ export function findMajorColor(tiles: Tile[]): Color | null {
     return secondCount === maxCount ? null : majorColor as Color
 }
 
+export function isCornerMatched(p: Puzzle, position: CornerPosition): boolean {
+    const cornerColor = p.corners[position].color
+    switch (position) {
+        case "tl": return cornerColor === p.tiles[0][0].color
+        case "tr": return cornerColor === p.tiles[0][2].color
+        case "bl": return cornerColor === p.tiles[2][0].color
+        case "br": return cornerColor === p.tiles[2][2].color
+    }
+}
+
 export function isSolved(p: Puzzle): boolean {
-    return p.tiles[0][0].color === p.corners.tl.color
-        && p.tiles[0][2].color === p.corners.tr.color
-        && p.tiles[2][0].color === p.corners.bl.color
-        && p.tiles[2][2].color === p.corners.br.color
+    return !!(p.corners.tl.matched && p.corners.tr.matched && p.corners.bl.matched && p.corners.br.matched)
 }
