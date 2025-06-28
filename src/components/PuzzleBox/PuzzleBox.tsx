@@ -4,28 +4,18 @@ import clickTileSound from "../../assets/sounds/click-tile.mp3"
 import openBoxSound from "../../assets/sounds/open-box.mp3"
 import { useAudio } from "../../hooks/useAudio"
 import { pressTile } from "../../logic/puzzleActions"
-import { Colors } from "../../types/colors"
 import type { Puzzle } from "../../types/puzzle"
 import PuzzleCorners from "../PuzzleCorners/PuzzleCorners"
 import PuzzleGrid from "../PuzzleGrid/PuzzleGrid"
 import PuzzleNote from "../PuzzleNote/PuzzleNote"
 import "./PuzzleBox.css"
 
-function PuzzleBox() {
-    const [puzzle, setPuzzle] = useState<Puzzle>({
-        corners: {
-            tl: { color: Colors.Pink },
-            tr: { color: Colors.Pink },
-            bl: { color: Colors.Pink },
-            br: { color: Colors.Pink },
-        },
-        tiles: [
-            [{ color: Colors.Pink }, { color: Colors.Pink }, { color: Colors.Gray }],
-            [{ color: Colors.Gray }, { color: Colors.Gray }, { color: Colors.Gray }],
-            [{ color: Colors.Orange }, { color: Colors.Orange }, { color: Colors.Orange }],
-        ],
-        solved: false
-    })
+type PuzzleBoxProps = {
+    puzzleData: Puzzle
+}
+
+function PuzzleBox({ puzzleData } : PuzzleBoxProps) {
+    const [puzzle, setPuzzle] = useState(puzzleData)
 
     const clickAudio = useAudio(clickTileSound)
     const openAudio = useAudio(openBoxSound)
