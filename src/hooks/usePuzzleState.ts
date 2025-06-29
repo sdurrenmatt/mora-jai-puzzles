@@ -1,21 +1,29 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
+import clickSound from "../assets/sounds/click.mp3"
+import lightSwitchSound from "../assets/sounds/light-switch.mp3"
+import openingLittleBoxSound from "../assets/sounds/opening-little-box.mp3"
 import { pressTile, updateCorner, updateSolved } from "../logic/puzzleActions"
 import { isCornerMatched } from "../logic/puzzleUtils"
-import type { CornerPosition } from "../types/cornerPositions"
+import { CornerPositions, type CornerPosition } from "../types/cornerPositions"
 import type { Puzzle } from "../types/puzzle"
-import type { AudioPlayer } from "./useAudio"
+import { useAudio } from "./useAudio"
 
-export function usePuzzleState(initialPuzzle: Puzzle, clickAudio: AudioPlayer, openAudio: AudioPlayer) {
+export function usePuzzleState(initialPuzzle: Puzzle) {
+    const initialPuzzleRef = useRef(initialPuzzle);
     const [puzzle, setPuzzle] = useState(initialPuzzle)
+
+    const lightSwitchAudio = useAudio(lightSwitchSound)
+    const clickAudio = useAudio(clickSound)
+    const openingLittleBoxAudio = useAudio(openingLittleBoxSound)
 
     useEffect(() => {
         if (puzzle.solved) {
-            openAudio.play()
+            openingLittleBoxAudio.play()
         }
-    }, [puzzle.solved, openAudio])
+    }, [puzzle.solved, openingLittleBoxAudio])
 
     const onCornerClick = useCallback((position: CornerPosition) => {
-        clickAudio.play()
+        lightSwitchAudio.play()
         setPuzzle(currentPuzzle => {
             if (currentPuzzle.corners[position].matched) return currentPuzzle
 
@@ -24,18 +32,15 @@ export function usePuzzleState(initialPuzzle: Puzzle, clickAudio: AudioPlayer, o
                 return updateSolved(puzzleAfterUpdateCorner)
             }
 
-            return initialPuzzle
+            return initialPuzzleRef.current
         })
-    }, [clickAudio, initialPuzzle])
+    }, [lightSwitchAudio])
 
     const onTileClick = useCallback((i: number, j: number) => {
         clickAudio.play()
         setPuzzle(currentPuzzle => {
             const puzzleAfterPressTile = pressTile(currentPuzzle, i, j)
-
-            const corners: CornerPosition[] = ["tl", "tr", "bl", "br"]
-            const cornersToUpdate = corners.filter(position => currentPuzzle.corners[position].matched)
-
+            const cornersToUpdate = Object.values(CornerPositions).filter(position => currentPuzzle.corners[position].matched)
             return cornersToUpdate.reduce(
                 (puzzle, position) => updateCorner(puzzle, position),
                 puzzleAfterPressTile

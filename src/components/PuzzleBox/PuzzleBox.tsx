@@ -1,7 +1,4 @@
 import clsx from "clsx"
-import clickTileSound from "../../assets/sounds/click-tile.mp3"
-import openBoxSound from "../../assets/sounds/open-box.mp3"
-import { useAudio } from "../../hooks/useAudio"
 import { usePuzzleState } from "../../hooks/usePuzzleState"
 import type { Puzzle } from "../../types/puzzle"
 import PuzzleCorners from "../PuzzleCorners/PuzzleCorners"
@@ -14,10 +11,7 @@ type PuzzleBoxProps = {
 }
 
 function PuzzleBox({ puzzleData }: PuzzleBoxProps) {
-    const clickAudio = useAudio(clickTileSound)
-    const openAudio = useAudio(openBoxSound)
-
-    const { puzzle, onCornerClick, onTileClick } = usePuzzleState(puzzleData, clickAudio, openAudio)
+    const { puzzle, onCornerClick, onTileClick } = usePuzzleState(puzzleData)
 
     return (
         <div className="puzzle-box-wrapper">

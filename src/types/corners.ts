@@ -1,8 +1,6 @@
 import type { Corner } from "./corner"
+import type { CornerPosition } from "./cornerPositions"
 
 export type Corners = {
-    tl: Corner
-    tr: Corner
-    bl: Corner
-    br: Corner
+    [key in CornerPosition]: Corner
 }

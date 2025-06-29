@@ -61,7 +61,7 @@ function pressOrangeTile(p: Puzzle, i: number, j: number) {
 }
 
 function pressPinkTile(p: Puzzle, i: number, j: number) {
-    const positions = getSurroundingPositions(i, j)
+    const positions = getSurroundingPositions(p, i, j)
     return shiftTiles(p, positions)
 }
 
@@ -85,7 +85,7 @@ function pressWhiteTile(p: Puzzle, i: number, j: number) {
 
     newTiles[i][j] = { ...newTiles[i][j], color: Colors.Gray }
 
-    const adjacentPositions = getAdjacentPositions(i, j)
+    const adjacentPositions = getAdjacentPositions(p, i, j)
     for (const [x, y] of adjacentPositions) {
         if (newTiles[x][y].color === Colors.Gray) {
             newTiles[x][y] = { ...newTiles[x][y], color: Colors.White }
