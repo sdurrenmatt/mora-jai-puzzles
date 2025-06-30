@@ -1,4 +1,4 @@
-import type { Color } from "../../types/colors"
+import type { Color } from "../../lib/puzzle/types"
 import "./PuzzleTile.css"
 
 type PuzzleTileProps = {

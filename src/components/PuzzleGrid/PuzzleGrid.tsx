@@ -1,5 +1,5 @@
 
-import type { Tile } from "../../types/tile"
+import type { Tile } from "../../lib/puzzle/types"
 import PuzzleTile from "../PuzzleTile/PuzzleTile"
 import "./PuzzleGrid.css"
 

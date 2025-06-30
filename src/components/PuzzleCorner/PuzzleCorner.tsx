@@ -1,6 +1,5 @@
 import clsx from "clsx"
-import type { Color } from "../../types/colors"
-import type { CornerPosition } from "../../types/cornerPositions"
+import type { Color, CornerPosition } from "../../lib/puzzle/types"
 import "./PuzzleCorner.css"
 
 type PuzzleCornerProps = {

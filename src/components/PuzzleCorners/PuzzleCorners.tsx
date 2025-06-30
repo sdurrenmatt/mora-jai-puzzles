@@ -1,5 +1,4 @@
-import { CornerPositions, type CornerPosition } from "../../types/cornerPositions"
-import type { Corners } from "../../types/corners"
+import { CornerPositions, type CornerPosition, type Corners } from "../../lib/puzzle/types"
 import PuzzleCorner from "../PuzzleCorner/PuzzleCorner"
 
 type PuzzleCornersProps = {

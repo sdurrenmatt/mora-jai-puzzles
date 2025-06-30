@@ -1,35 +1,21 @@
-import { Colors, type Color } from "../types/colors"
-import type { CornerPosition } from "../types/cornerPositions"
-import type { Puzzle } from "../types/puzzle"
-import { findMajorColor, getAdjacentPositions, getAdjacentTiles, getSurroundingPositions, isCornerMatched, isSolved } from "./puzzleUtils"
-
-function swapTiles(p: Puzzle, i1: number, j1: number, i2: number, j2: number) {
-    if (i1 === i2 && j1 === j2) return p
-
-    const newTiles = p.tiles.map(row => [...row])
-
-    const tmpTile = newTiles[i1][j1]
-    newTiles[i1][j1] = newTiles[i2][j2]
-    newTiles[i2][j2] = tmpTile
-
-    return { ...p, tiles: newTiles }
-}
-
-function shiftTiles(p: Puzzle, positions: [number, number][]): Puzzle {
-    const newTiles = p.tiles.map(row => [...row])
-    const tilesToShift = positions.map(([x, y]) => p.tiles[x][y])
-    const shiftedTiles = [tilesToShift[tilesToShift.length - 1], ...tilesToShift.slice(0, -1)]
-
-    positions.forEach(([x, y], i) => {
-        newTiles[x][y] = shiftedTiles[i]
-    })
-
-    return { ...p, tiles: newTiles }
-}
+import { Colors, CornerPositions, type Color, type CornerPosition, type Puzzle } from "./types"
+import {
+    checkMatched,
+    checkSolved,
+    findMajorColor,
+    getAdjacentPositions,
+    getAdjacentTiles,
+    getSurroundingPositions,
+    markMatched,
+    markSolved,
+    shiftRow,
+    shiftTiles,
+    swapTiles,
+    unmarkMatched
+} from "./utils"
 
 function pressBlackTile(p: Puzzle, i: number) {
-    const newTiles = p.tiles.map((row, rowIndex) => rowIndex === i ? [row[row.length - 1], ...row.slice(0, -1)] : row)
-    return { ...p, tiles: newTiles }
+    return shiftRow(p, i)
 }
 
 function pressBlueTile(p: Puzzle, i: number, j: number) {
@@ -117,25 +103,29 @@ const colorTilePressers: Record<Color, ColorTilePresser> = {
     [Colors.Yellow]: (p, i, j) => pressYellowTile(p, i, j),
 }
 
-export function pressTile(p: Puzzle, i: number, j: number): Puzzle {
+function pressTile(p: Puzzle, i: number, j: number): Puzzle {
     const color = p.tiles[i][j].color
     const tilePresser = colorTilePressers[color]
     return tilePresser(p, i, j)
 }
 
-export function updateCorner(p: Puzzle, position: CornerPosition): Puzzle {
-    return {
-        ...p,
-        corners: {
-            ...p.corners,
-            [position]: {
-                ...p.corners[position],
-                matched: isCornerMatched(p, position),
-            },
-        }
+export function handleCornerClick(puzzle: Puzzle, position: CornerPosition, initialPuzzle: Puzzle): Puzzle {
+    if (puzzle.corners[position].matched) return puzzle
+
+    if (checkMatched(puzzle, position)) {
+        const puzzleAfterUpdateCorner = markMatched(puzzle, position)
+        return checkSolved(puzzleAfterUpdateCorner) ? markSolved(puzzleAfterUpdateCorner) : puzzleAfterUpdateCorner
     }
+
+    return initialPuzzle
 }
 
-export function updateSolved(p: Puzzle): Puzzle {
-    return isSolved(p) ? { ...p, solved: true } : p
+export function handleTileClick(p: Puzzle, i: number, j: number) {
+    const puzzleAfterPressTile = pressTile(p, i, j)
+
+    const cornersToUpdate = Object.values(CornerPositions).filter(position => puzzleAfterPressTile.corners[position].matched)
+    return cornersToUpdate.reduce(
+        (puzzle, position) => checkMatched(puzzle, position) ? puzzle : unmarkMatched(puzzle, position),
+        puzzleAfterPressTile
+    )
 }

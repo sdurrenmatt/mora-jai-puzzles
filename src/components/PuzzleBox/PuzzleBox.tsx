@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import { usePuzzleState } from "../../hooks/usePuzzleState"
-import type { Puzzle } from "../../types/puzzle"
+import type { Puzzle } from "../../lib/puzzle/types"
 import PuzzleCorners from "../PuzzleCorners/PuzzleCorners"
 import PuzzleGrid from "../PuzzleGrid/PuzzleGrid"
 import PuzzleNote from "../PuzzleNote/PuzzleNote"

@@ -1,5 +1,4 @@
-import { Colors } from "../../types/colors"
-import type { Puzzle } from "../../types/puzzle"
+import { Colors, type Puzzle } from "../../lib/puzzle/types"
 
 export const puzzle1: Puzzle = {
     corners: {

@@ -1,7 +1,34 @@
-import type { Color } from "../types/colors"
-import { CornerPositions, type CornerPosition } from "../types/cornerPositions"
-import type { Puzzle } from "../types/puzzle"
-import type { Tile } from "../types/tile"
+import { CornerPositions, type Color, type CornerPosition, type Puzzle, type Tile } from "./types"
+
+export function shiftRow(p: Puzzle, i: number) {
+    const newTiles = p.tiles.map((row, rowIndex) => rowIndex === i ? [row[row.length - 1], ...row.slice(0, -1)] : row)
+
+    return { ...p, tiles: newTiles }
+}
+
+export function swapTiles(p: Puzzle, i1: number, j1: number, i2: number, j2: number): Puzzle {
+    if (i1 === i2 && j1 === j2) return p
+
+    const newTiles = p.tiles.map(row => [...row])
+
+    const tmpTile = newTiles[i1][j1]
+    newTiles[i1][j1] = newTiles[i2][j2]
+    newTiles[i2][j2] = tmpTile
+
+    return { ...p, tiles: newTiles }
+}
+
+export function shiftTiles(p: Puzzle, positions: [number, number][]): Puzzle {
+    const newTiles = p.tiles.map(row => [...row])
+    const tilesToShift = positions.map(([x, y]) => p.tiles[x][y])
+    const shiftedTiles = [tilesToShift[tilesToShift.length - 1], ...tilesToShift.slice(0, -1)]
+
+    positions.forEach(([x, y], i) => {
+        newTiles[x][y] = shiftedTiles[i]
+    })
+
+    return { ...p, tiles: newTiles }
+}
 
 export function getAdjacentTiles(p: Puzzle, i: number, j: number): Tile[] {
     return [
@@ -49,7 +76,7 @@ export function findMajorColor(tiles: Tile[]): Color | null {
     return secondCount === maxCount ? null : majorColor as Color
 }
 
-export function isCornerMatched(p: Puzzle, position: CornerPosition): boolean {
+export function checkMatched(p: Puzzle, position: CornerPosition): boolean {
     const cornerColor = p.corners[position].color
     switch (position) {
         case CornerPositions.TL: return cornerColor === p.tiles[0][0].color
@@ -59,6 +86,36 @@ export function isCornerMatched(p: Puzzle, position: CornerPosition): boolean {
     }
 }
 
-export function isSolved(p: Puzzle): boolean {
-    return !!(p.corners.tl.matched && p.corners.tr.matched && p.corners.bl.matched && p.corners.br.matched)
+export function markMatched(p: Puzzle, position: CornerPosition): Puzzle {
+    return {
+        ...p,
+        corners: {
+            ...p.corners,
+            [position]: {
+                ...p.corners[position],
+                matched: true,
+            },
+        }
+    }
+}
+
+export function unmarkMatched(p: Puzzle, position: CornerPosition): Puzzle {
+    return {
+        ...p,
+        corners: {
+            ...p.corners,
+            [position]: {
+                ...p.corners[position],
+                matched: false,
+            },
+        }
+    }
+}
+
+export function checkSolved(p: Puzzle): boolean {
+    return Object.values(CornerPositions).every(position => p.corners[position].matched)
+}
+
+export function markSolved(p: Puzzle): Puzzle {
+    return { ...p, solved: true }
 }

@@ -1,5 +1,0 @@
-import type { Color } from "./colors"
-
-export type Tile = {
-    color: Color,
-}
