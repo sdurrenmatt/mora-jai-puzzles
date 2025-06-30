@@ -9,7 +9,7 @@ import type { Puzzle } from "../types/puzzle"
 import { useAudio } from "./useAudio"
 
 export function usePuzzleState(initialPuzzle: Puzzle) {
-    const initialPuzzleRef = useRef(initialPuzzle);
+    const initialPuzzleRef = useRef(initialPuzzle)
     const [puzzle, setPuzzle] = useState(initialPuzzle)
 
     const lightSwitchAudio = useAudio(lightSwitchSound)
