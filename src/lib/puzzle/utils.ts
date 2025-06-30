@@ -1,6 +1,6 @@
 import { CornerPositions, type Color, type CornerPosition, type Puzzle, type Tile } from "./types"
 
-export function shiftRow(p: Puzzle, i: number) {
+export function shiftRow(p: Puzzle, i: number): Puzzle {
     const newTiles = p.tiles.map((row, rowIndex) => rowIndex === i ? [row[row.length - 1], ...row.slice(0, -1)] : row)
 
     return { ...p, tiles: newTiles }

@@ -14,11 +14,11 @@ import {
     unmarkMatched
 } from "./utils"
 
-function pressBlackTile(p: Puzzle, i: number) {
+function pressBlackTile(p: Puzzle, i: number): Puzzle {
     return shiftRow(p, i)
 }
 
-function pressBlueTile(p: Puzzle, i: number, j: number) {
+function pressBlueTile(p: Puzzle, i: number, j: number): Puzzle {
     const middleTileColor = p.tiles[1][1].color
 
     if (middleTileColor === Colors.Blue) return p
@@ -27,15 +27,15 @@ function pressBlueTile(p: Puzzle, i: number, j: number) {
     return tilePresser ? tilePresser(p, i, j) : p
 }
 
-function pressGrayTile(p: Puzzle) {
+function pressGrayTile(p: Puzzle): Puzzle {
     return p
 }
 
-function pressGreenTile(p: Puzzle, i: number, j: number) {
+function pressGreenTile(p: Puzzle, i: number, j: number): Puzzle {
     return swapTiles(p, i, j, 2 - i, 2 - j)
 }
 
-function pressOrangeTile(p: Puzzle, i: number, j: number) {
+function pressOrangeTile(p: Puzzle, i: number, j: number): Puzzle {
     const adjacentTiles = getAdjacentTiles(p, i, j)
     const majorColor = findMajorColor(adjacentTiles)
 
@@ -46,12 +46,12 @@ function pressOrangeTile(p: Puzzle, i: number, j: number) {
     return { ...p, tiles: newTiles }
 }
 
-function pressPinkTile(p: Puzzle, i: number, j: number) {
+function pressPinkTile(p: Puzzle, i: number, j: number): Puzzle {
     const positions = getSurroundingPositions(p, i, j)
     return shiftTiles(p, positions)
 }
 
-function pressRedTile(p: Puzzle) {
+function pressRedTile(p: Puzzle): Puzzle {
     const colorSwitch: Partial<Record<Color, Color>> = {
         [Colors.White]: Colors.Black,
         [Colors.Black]: Colors.Red,
@@ -61,12 +61,12 @@ function pressRedTile(p: Puzzle) {
     return { ...p, tiles: newTiles }
 }
 
-function pressVioletTile(p: Puzzle, i: number, j: number) {
+function pressVioletTile(p: Puzzle, i: number, j: number): Puzzle {
     if (i === 2) return p
     return swapTiles(p, i, j, i + 1, j)
 }
 
-function pressWhiteTile(p: Puzzle, i: number, j: number) {
+function pressWhiteTile(p: Puzzle, i: number, j: number): Puzzle {
     const newTiles = p.tiles.map((row) => [...row])
 
     newTiles[i][j] = { ...newTiles[i][j], color: Colors.Gray }
@@ -83,7 +83,7 @@ function pressWhiteTile(p: Puzzle, i: number, j: number) {
     return { ...p, tiles: newTiles }
 }
 
-function pressYellowTile(p: Puzzle, i: number, j: number) {
+function pressYellowTile(p: Puzzle, i: number, j: number): Puzzle {
     if (i === 0) return p
     return swapTiles(p, i, j, i - 1, j)
 }
@@ -120,7 +120,7 @@ export function handleCornerClick(puzzle: Puzzle, position: CornerPosition, init
     return initialPuzzle
 }
 
-export function handleTileClick(p: Puzzle, i: number, j: number) {
+export function handleTileClick(p: Puzzle, i: number, j: number): Puzzle {
     const puzzleAfterPressTile = pressTile(p, i, j)
 
     const cornersToUpdate = Object.values(CornerPositions).filter(position => puzzleAfterPressTile.corners[position].matched)
