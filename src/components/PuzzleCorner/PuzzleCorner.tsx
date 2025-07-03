@@ -1,5 +1,6 @@
 import clsx from "clsx"
 import type { Color, CornerPosition } from "../../lib/puzzle/types"
+import { ColorHexCodes } from "../../styles/colors"
 import "./PuzzleCorner.css"
 
 type PuzzleCornerProps = {
@@ -18,7 +19,7 @@ function PuzzleCorner({ position, color, matched, onClick }: PuzzleCornerProps) 
             "wood-texture",
             "wood-filter--light"
         )}
-            style={{ backgroundColor: color }}
+            style={{ backgroundColor: ColorHexCodes[color] }}
             onClick={onClick} />
     )
 }

@@ -103,13 +103,7 @@ const colorTilePressers: Record<Color, ColorTilePresser> = {
     [Colors.Yellow]: (p, i, j) => pressYellowTile(p, i, j),
 }
 
-function pressTile(p: Puzzle, i: number, j: number): Puzzle {
-    const color = p.tiles[i][j].color
-    const tilePresser = colorTilePressers[color]
-    return tilePresser(p, i, j)
-}
-
-export function handleCornerClick(puzzle: Puzzle, position: CornerPosition, initialPuzzle: Puzzle): Puzzle {
+export function pressCorner(puzzle: Puzzle, position: CornerPosition, initialPuzzle: Puzzle): Puzzle {
     if (puzzle.corners[position].matched) return puzzle
 
     if (checkMatched(puzzle, position)) {
@@ -120,8 +114,10 @@ export function handleCornerClick(puzzle: Puzzle, position: CornerPosition, init
     return initialPuzzle
 }
 
-export function handleTileClick(p: Puzzle, i: number, j: number): Puzzle {
-    const puzzleAfterPressTile = pressTile(p, i, j)
+export function pressTile(p: Puzzle, i: number, j: number): Puzzle {
+    const color = p.tiles[i][j].color
+    const tilePresser = colorTilePressers[color]
+    const puzzleAfterPressTile = tilePresser(p, i, j)
 
     const cornersToUpdate = Object.values(CornerPositions).filter(position => puzzleAfterPressTile.corners[position].matched)
     return cornersToUpdate.reduce(
