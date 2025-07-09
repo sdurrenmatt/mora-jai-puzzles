@@ -9,7 +9,7 @@ export function useAudio(src: string): AudioPlayer {
 
   const play = useCallback(() => {
     audioRef.current.currentTime = 0
-    audioRef.current.play()
+    audioRef.current.play().catch(() => {})
   }, [])
 
   return useMemo(() => ({ play }), [play])
