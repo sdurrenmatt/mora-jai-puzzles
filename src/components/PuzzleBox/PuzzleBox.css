@@ -9,7 +9,6 @@
     position: relative;
     padding: 45px;
     clip-path: polygon(45px 0%, calc(100% - 45px) 0%, 100% 45px, 100% calc(100% - 45px), calc(100% - 45px) 100%, 45px 100%, 0% calc(100% - 45px), 0% 45px);
-    overflow: hidden;
     transform-origin: center center;
     transform: rotateX(30deg) translateY(-10px);
 }
@@ -22,7 +21,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    border: 8px solid #1a1305;
+    box-shadow: inset -5px -5px 5px #1a1305, inset 5px 5px 5px #1a1305;
     box-sizing: border-box;
 }
 
@@ -30,6 +29,7 @@
     perspective: 3500px;
     perspective-origin: center top;
     border: 4px solid #201508;
+    box-shadow: inset -3px -3px 40px black, inset 3px 3px 40px black;
     position: relative;
     display: inline-block;
     box-sizing: border-box;
